@@ -1,0 +1,150 @@
+{% extends 'index.html' %}
+{% block result %}
+{% load static %}
+<style>
+.modal1 {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    
+                
+  }
+  
+  /* Modal Content/Box */
+  .modal-content1 {
+    background-color: #fefefe;
+    color: aqua;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    background-image: url("{% static 'img/rest3.jpeg' %}");
+  }
+  table
+  {
+    background-color: rgba(0,0,0,0.4);
+  }
+</style>  
+    <div id="myModal1" class="modal1">
+         
+        
+        <div class="modal-content1">
+           
+          <table cellpadding=6px width=100% >
+                <tr>
+                    <td colspan="4" align="center">
+                        <h1 style="color: rgb(159, 209, 241);">Our Analysis Result</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><text style="font-size: 20px;">Establishment</text></b>
+                    </td>
+                    <td>
+                        {{est}}
+                    </td>
+                
+                    <td>
+                        <b><text style="font-size: 20px;">Locality</text></b>
+                    </td>
+                    <td>
+                        {{locality}}
+                    </td>
+              </tr>
+              <tr>
+                  <td>
+                      <b><text style="font-size: 20px;">Home Delivery</text></b>
+                  </td>
+                  <td>
+                      {% if Home_delivery == 1 %}
+                            <text>Yes</text>
+                       {% else %}
+                            <text>No</text>
+                       {% endif %}
+                  </td>
+                  <td>
+                      <b><text style="font-size: 20px;">Timings</text></b>
+                  </td>
+                  <td>
+                      {{st_timing}}&nbsp;to&nbsp;{{end_timing}}
+                  </td>
+              </tr>
+              <tr>
+                  <td colspan="4">
+                    <table width=100% cellpadding=2px align="center">
+                        <tr>
+                            <td colspan="4" align="center">
+                                <b><text style="font-size: 20px;">Cuisines</text></b>
+                            </td>
+                        </tr>
+                        {% for r in cuisines %}
+                        {% cycle '<tr>' '' '' '' %}
+                            <td>{{r}}</td>
+                        {% cycle '' '' '' '</tr>' %}
+                        {% endfor %}
+                    </table>  
+                </td>   
+              </tr>
+              <tr>
+                    <td colspan="4">
+                        <table width=100% cellpadding=2px align="center" >
+                            
+                            <tr>
+                                <td colspan="4" align="center">
+                                    <b><text style="font-size: 20px;">Highlights</text></b>
+                                </td>
+                            </tr>
+                            {% for r in highlights %}
+                            {% cycle '<tr>' '' '' '' %}
+                                <td>{{r}}</td>
+                            {% cycle '' '' '' '</tr>' %}
+                            {% endfor %}
+                        </table>  
+                    </td>
+              </tr>
+              <tr>
+                  <td>
+                        {% if what_is == "cost" %}
+                            <b><text style="font-size: 20px;">Predicted Rating</text></b>
+                        {% else %}
+                            <text>Predicted Cost</text>
+                        {% endif %}        
+                  </td>
+                  <td>
+                      {{result}}
+                  </td>
+              </tr>
+              
+                <tr> 
+                    <td colspan="4" align="center">
+                    <button id="close-btn">
+                        Close
+                    </button>
+                    </td>
+                </tr>
+          </table>
+        </div>
+
+      </div>
+    <script>
+    $("#close-btn").click(
+        function(){
+            $("#myModal1").hide();
+        }
+    );
+
+    $( window ).click(
+        function(){
+            $("#myModal1").hide();
+        }
+
+    );
+    
+    </script>  
+{% endblock %}

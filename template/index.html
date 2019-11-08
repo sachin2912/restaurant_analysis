@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Home Page</title>
+        <!-- Bootstrap CDN -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+        ></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Select2 CDN -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+
+        <!-- Our Custom CSS -->
+        <style>
+            .bgImg {
+                position: absolute;
+                height: 100vh;
+                width: 100vw;
+                z-index: -1;
+                background-image: url("{% static 'img/rest2.jpg' %}");
+                background-attachment: fixed;
+                background-position: center;
+                background-size: cover;
+                opacity: 0.3;
+            }
+            .container {
+                display: flex;
+                height: 100vh;
+                justify-content: center;
+                align-items: center;
+            }
+            .card {
+                width: 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="bgImg"></div>
+        <div class="container">
+            <div class="card shadow" style="background-color: transparent;">
+                <div class="card-header text-center text-primary">
+                    <h1>
+                        Restaurant Analyser
+                    </h1>
+                </div>
+                <div class="card-body p-5">
+                    <form action="" class="" method="POST">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <strong>
+                                    <label for="est">Establishment:</label>
+                                </strong>
+                                <select name="est" id="est" class="form-control" required> </select>
+                            </div>
+                            <div class="form-group col-6">
+                                <strong>
+                                    <label for="locality">Locality:</label>
+                                </strong>
+                                <select name="locality" id="locality" class="form-control" required> </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <strong>
+                                <label for="cuisines">Cuisines:</label>
+                            </strong>
+                            <select
+                                class="form-control cuisines-multiple"
+                                id="cuisines"
+                                name="cuisines[]"
+                                multiple="multiple"
+                                required
+                            >
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            
+                            <div class="col-6">
+                                <strong>
+                                    Operating Time
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            
+                            <div class="form-group col-3">
+                                <label for="fromtime">From:</label>
+                                <input type="time" name="fromtime" id="fromtime" class="form-control" required />
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="totime">To:</label>
+                                <input type="time" name="totime" id="totime" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-8">
+                                <strong>
+                                    <label for="highlights">Highlights:</label>
+                                </strong>
+                                <select
+                                    class="form-control highlights-multiple"
+                                    id="highlights"
+                                    name="highlights[]"
+                                    multiple="multiple"
+                                    required
+                                >
+                                </select>
+                            </div>
+                            <div class="form-group col-4 text-center">
+                                <strong> <label for="delivery">Home Delivery?</label><br /> </strong>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input
+                                        type="radio"
+                                        id="customRadioInline1"
+                                        name="customRadioInline1"
+                                        class="custom-control-input"
+                                    />
+                                    <label class="custom-control-label" for="customRadioInline1">Yes</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input
+                                        type="radio"
+                                        id="customRadioInline2"
+                                        name="customRadioInline1"
+                                        class="custom-control-input"
+                                    />
+                                    <label class="custom-control-label" for="customRadioInline2">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <strong>
+                                    <label for="cost">Cost per head</label>
+                                </strong>
+                                <input
+                                    type="number"
+                                    name="cost"
+                                    id="cost"
+                                    min="0"
+                                    max="30000"
+                                    step="25"
+                                    class="form-control"
+                                />
+                            </div>
+                            <div class="form-group col-6">
+                                <strong>
+                                    <label for="rating">Rating</label>
+                                </strong>
+                                <input
+                                    type="number"
+                                    name="rating"
+                                    id="rating"
+                                    min="1"
+                                    max="5"
+                                    step="0.1"
+                                    class="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary mx-auto" id="submitBtn" value="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    {% block result %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function() {
+            $(".cuisines-multiple").select2();
+            $(".highlights-multiple").select2();
+
+            function load_data(){
+                // Load establishments
+                var est_opts = "";
+                $.get("{% static 'text/establishment.txt' %}", (data, success) => {
+                    arr = data.split(",");
+                    est_opts += '<option value="" disabled hidden selected>Select Establishment</option>';
+                    arr.forEach(element => {
+                        if (element)
+                            est_opts += '<option value="' + element + '">' + element + "</option>";
+                    });
+                    $("#est").html(est_opts);
+                });
+                // Load locality
+                var loc_opts = "";
+                $.get("{% static 'text/locality.txt' %}", (data, success) => {
+                    arr = data.split(";");
+                    loc_opts += '<option value="" disabled hidden selected>Select Locality</option>';
+                    arr.forEach(element => {
+                        loc_opts += '<option value="' + element + '">' + element + "</option>";
+                    });
+                    $("#locality").html(loc_opts);
+                });
+                // Load cuisines
+                var cuisines_opts = "";
+                $.get("{% static 'text/cuisines.txt' %}", (data, success) => {
+                    arr = data.split(",");
+                    cuisines_opts += '<option value="" disabled hidden>Select Cuisine</option>';
+                    arr.forEach(element => {
+                        cuisines_opts += '<option value="' + element + '">' + element + "</option>";
+                    });
+                    $("#cuisines").html(cuisines_opts);
+                });
+                // Load highlights
+                var high_opts = "";
+                $.get("{% static 'text/highlights.txt' %}", (data, success) => {
+                    arr = data.split(",");
+                    high_opts += '<option value="" disabled hidden>Select Highlights</option>';
+                    arr.forEach(element => {
+                        if(element)
+                            high_opts += '<option value="' + element + '">' + element + "</option>";
+                    });
+                    $("#highlights").html(high_opts);
+                });
+            }
+            load_data();
+            
+            $("#rating").click(() => {
+                $("#cost").val('');
+                $("#submitBtn").html("Predict Cost");
+            });
+            $("#rating").blur(() => {
+                var ele = $('#rating');
+                if(ele.val() > ele.attr('max'))
+                    ele.val(ele.attr('max'));
+                if(ele.val() < ele.attr('min'))
+                    ele.val(ele.attr('min'));
+            });
+
+            $("#cost").click(() => {
+                $("#rating").val('');
+                $("#submitBtn").html("Predict Rating");
+            });
+            $("#cost").blur(() => {
+                var ele = $('#cost');
+                if(ele.val() > ele.attr('max'))
+                    ele.val(ele.attr('max'));
+                if(ele.val() < ele.attr('min'))
+                    ele.val(ele.attr('min'));
+            });
+        });
+    </script>
+</html>
