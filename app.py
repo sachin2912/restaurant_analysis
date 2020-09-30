@@ -1,28 +1,17 @@
-from django.shortcuts import render,redirect
-from django.utils.html import strip_tags
+from flask import Flask, jsonify, request 
+  
 
-import numpy as np
-import pandas as pd
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures, MinMaxScaler
-import matplotlib.pyplot as plt
-pd.set_option("display.max_columns",500)
+app = Flask(__name__) 
+  
+# on the terminal type: curl http://127.0.0.1:5000/ 
+# returns hello world when we use GET. 
+# returns the data that we send when we use POST. 
 
-from keras import regularizers
-from keras.models import Sequential
-from keras.layers import Dense, Flatten, Dropout
-from keras.models import load_model
-#from sklearn.externals import joblib
-import joblib
-import keras
-
-
-def home(request):
-    
-    if request.method == "POST":
-        form1=request.POST
+@app.route('/api/<what_to_predict>', methods = ['POST']) 
+def predict(what_to_predict): 
+            form1=request.POST
         
-        establishment = form1['est']
+        establishment = form1['establishment']
         establishment=establishment.replace("\r\n","")
         locality= form1['locality']
         locality=locality.replace("\r\n","")
@@ -34,15 +23,11 @@ def home(request):
         highlights=[]
         for i in form1.getlist('highlights[]'):
             highlights.append(i.replace("\r\n",""))
-        Home_delivery = form1['customRadioInline1']
-        cost = form1['cost']
-        cost=cost.replace("\r\n","")
-        rating = form1['rating']
-        rating=rating.replace("\r\n","")
-        if Home_delivery=="on":
-            Home_delivery=1
-        elif Home_delivery=="off":
-            Home_delivery=-1
+        Home_delivery = form1['HomeDelivery']
+        if type(Home_delivery) != "int":
+            return jsonify({"error" : "Home delivery needs to be intger type"})
+        if Home_delivery not in [-1,1]:
+            return jsonify({"error" : "Home delivery value needs to either 1 or -1"})
 
         start=""
         for i in range(0,len(operating_time_start)):
@@ -59,13 +44,16 @@ def home(request):
                     end+=operating_time_end[i]
                 else:
                     end+=operating_time_end[i]
-        if rating=="":
+        if what_to_predict=="rating":
+            cost = form1['cost']
             call=1
             res_value=cost
             what_is="cost"
             result=deafult_call(call,cuisines,highlights,establishment,locality,Home_delivery,int(start),int(end),int(cost))
-        elif cost=="":
+        elif what_to_predict == "cost":
             call=2
+            rating = form1['rating']
+        
             res_value=rating
             what_is="rating"
             result=deafult_call(call,cuisines,highlights,establishment,locality,Home_delivery,int(start),int(end),rating)
@@ -81,8 +69,8 @@ def home(request):
             "what_is" : what_is,
             "highlights" : highlights,
         }
-        return render(request,"results.html",result_1)
-    return render(request,"index.html",{})
+        return jsonify("result" : result_1)
+    return jsonify({"error":"send request in POST method"})
     
 
 
@@ -211,3 +199,10 @@ def deafult_call(call,cuisine_inputs,highlight_inputs,establishment,locality,del
             df = scaler_rating.transform(df)
             result=predict_rating.predict(df)[0]
     return result    
+        return jsonify({'data': data}) 
+  
+  
+# driver function 
+if __name__ == '__main__': 
+  
+    app.run(debug = True) 
